@@ -9,12 +9,20 @@ color b1 = color(42,11,88);
 color b2 = color(51,0,102);
 color b3 = color(255, 102, 0);
 
+
+
 color [] colores ={
-  color(42,11,88),
-//  color(51,0,102),
-  color(255, 102, 0)
+  color(42,11,88), // new arriving
+  color(51,0,102),  // line moving in the middle  
+  color(255, 102, 0) // el que se va
   //
-  
+  color(255, 102, 0),
+  color(0,0,20),
+  color(42,11,88)
+  //
+  color(42,11,88),
+  color(42,11,88),
+  color(42,11,88),  
   
 };
 
@@ -23,6 +31,7 @@ color [] colores ={
 float v= 1;
 float corte1 = 0;
 float corte2 = height;
+int color_index = 0;
 //,corte2,corte3;
 
 void setup() {
@@ -32,20 +41,22 @@ void setup() {
   noFill();
 }
 
-void draw() {
-  
-  //setGradient(0,0, width, height/2, b1, b2, Y_AXIS);
-  //setGradient(0,height/2, width, height/2, b2, b3, Y_AXIS);
+color set_color(int index) {
+  return(colores[index]);
+}
 
-  setGradient(0,0, width, corte1, b1, b2, Y_AXIS);
-  setGradient(0,int(corte1), width, height-corte1, b2, b3,Y_AXIS);
-  
+void draw() {
+  // 2 gradients    
+  setGradient(0,0, width, corte1, set_color(0), set_color(color_index+1), Y_AXIS);
+  setGradient(0,int(corte1), width, height-corte1, set_color(color_index+1),set_color(color_index+2),Y_AXIS);
+  //guides
   rect(0,0, width, corte1);
   rect(0,corte1,width,height-corte1);
-  
+  // check gradient size
   if(corte1>height){
     corte1= 0;
-    corte2= height/2;
+    corte2= 0;
+    color_index += 3;
   }else{
     corte1+= v;
     corte2-= v;
