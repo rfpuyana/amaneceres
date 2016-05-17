@@ -5,50 +5,67 @@ color b1 = color(42,11,88);
 color b2 = color(51,0,102);
 color b3 = color(255, 102, 0);
 color [] colores ={
-  color(42,11,88), // new arriving  
+  color(42,11,88), // el que llega
   color(255, 102, 0), // el que se va
   //
-  color(255, 102, 0), // el que se va
-  color(42,11,88), // new arriving
+  color(0, 0, 0),
+  color(255, 102, 100),  
   //
-  color(0),
-  color(255)    
-  
+  color(255),    
+  color(255, 0, 100)  
 };
-float v= 1;
+float v= 2;
 float corte1 = 0;
 float corte2 = height;
 int color_index = 0;
 //,corte2,corte3;
 
 void setup() {
-  size(640, 360);
+  size(1200, 700);
   frameRate(60);
   // Define colors 
   noFill();
 }
 color set_color(int index) {
+//  println(index+"-"+red(colores[index])+","+green(colores[index]));
   return(colores[index]);
+
 }
+
+color average_color (color c1,color c2){
+    color c3 = lerpColor(c1, c2, .5);
+    return(color(c3));
+}
+
 void draw() {
-  // 2 gradients 
-  color middleColor = (set_color(0) + set_color(1))/2;
-  setGradient(0,0, width, corte1, set_color(color_index), middleColor, Y_AXIS);
-  rect(0,0, width, corte1);
-  setGradient(0,int(corte1), width, height-corte1, middleColor,set_color(color_index+1),Y_AXIS);
-  //guides
- 
-  rect(0,corte1,width,height-corte1);
-  // check gradient size
-  if(corte1>height+height/2){
-    corte1= 0;
-    corte2= 0;
-    color_index += 2;
+  if (color_index != colores.length){
+
+    //setGradient(0,1, width, corte1, set_color(color_index), set_color(color_index+1), Y_AXIS);
+    //setGradient(0,int(corte1), width, height-corte1, set_color(color_index+1),set_color(color_index+2),Y_AXIS);    
+
+    setGradient(0,1, width, corte1, set_color(color_index), average_color(set_color(color_index),set_color(color_index+1)), Y_AXIS);
+    setGradient(0,int(corte1), width, height-corte1, average_color(set_color(color_index),set_color(color_index+1)),set_color(color_index+1),Y_AXIS);    
+
+//guides
+//    rect(0,0, width, corte1);
+//    rect(0,corte1,width,height-corte1);
+
+    // check gradient size
+    //print(color_index);
+    if(corte1>height+height/2){
+      corte1= 0;
+      corte2= 0;
+      color_index += 2;              
+    
+    }else{
+      corte1+= v;
+      corte2-= v;
+    }
   }else{
-    corte1+= v;
-    corte2-= v;
-  }
-  
+    color_index = 0;
+  }  
+
+
 
 }
 void setGradient(int x, int y, float w, float h, color c1, color c2, int axis ) {
